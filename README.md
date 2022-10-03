@@ -1,5 +1,14 @@
 # BestBet
 
+# Set up local environment (frontend)
+
+Install Node version 18
+
+Inside web folder run `npm install`
+To start development server run `npm run dev`
+To create build run `npm run build`
+
+
 ## Set up local environment(backend)
 
 - To set up local environment we will be using pipenv. So if you do not have pipenv installed install it using this command:
