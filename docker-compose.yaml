@@ -1,0 +1,21 @@
+version: "3.5"
+
+volumes:
+  postgres-data: {}
+
+services:
+  postgres:
+    image: postgres:10-bullseye
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: "bestbet"
+      POSTGRES_PASSWORD: "not-secret"
+      POSTGRES_USER: "postgres"
+    restart: always
+    ports:
+      - "5440:5432"
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
