@@ -13,6 +13,7 @@ import {
   fetchPokemons,
   selectPokemons,
 } from "@/app/features/pokemon/pokemonSlice";
+import withBaseLayout from "@/components/layouts/base/withBaseLayout";
 
 const Counter: NextPage = () => {
   const count = useAppSelector(selectCount);
@@ -70,4 +71,4 @@ const Counter: NextPage = () => {
   );
 };
 
-export default Counter;
+export default withBaseLayout(Counter);
