@@ -3,30 +3,33 @@ from unittest.mock import MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
+from httpx import AsyncClient
 
-from app import app, get_db_session
+from app import app
+from services.database import DatabaseService
 
 pytest_plugins = [
     fixture.replace("/", ".").replace("\\", ".").replace(".py", "")
     for fixture in glob("tests/fixtures/**/*.py", recursive=True)
+    + glob("tests/integration/fixtures/**/*.py", recursive=True)
     if "__" not in fixture
 ]
 
-db = MagicMock()
+
+@pytest.fixture
+def session_mock():
+    session = MagicMock()
+    app.dependency_overrides[DatabaseService.get_db_session] = lambda: session
+    yield session
+    del app.dependency_overrides[DatabaseService.get_db_session]
 
 
 @pytest.fixture
-def db_mock():
-    return db
-
-
-def override_get_db_session():
-    return db
-
-
-app.dependency_overrides[get_db_session] = override_get_db_session
+def client(session_mock):
+    with TestClient(app) as client:
+        yield client
 
 
 @pytest.fixture
-def client():
-    yield TestClient(app)
+def async_client(session_mock):
+    return AsyncClient(app=app, base_url="http://localhost")
