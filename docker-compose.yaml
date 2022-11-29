@@ -10,6 +10,7 @@ services:
       - DATABASE_URL=postgresql+psycopg2://postgres:not-secret@postgres:5432/bestbet
       - ENVIRONMENT=dev
       - CORS_ALLOWED_ORIGINS=["http://localhost:3000"]
+      - JWT_BASE=notsecret
     volumes:
       - ./api:/app
     ports:

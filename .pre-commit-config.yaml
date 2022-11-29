@@ -30,7 +30,9 @@ repos:
           ]
         args:
           [
+            "--ignore=B008, C812, W503",
             "--max-line-length=100",
+            "--exclude=**alembic/versions/*,**locust.py",
           ]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
