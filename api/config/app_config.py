@@ -11,6 +11,7 @@ class AppSettings(BaseSettings):
     CORS_ALLOWED_ORIGINS: Sequence[str]
     CORS_ALLOWED_METHODS: Sequence[str] = ["*"]
     CORS_ALLOWED_HEADERS: Sequence[str] = ["*"]
+    JWT_BASE: str
 
 
 AppConfig = AppSettings()

@@ -1,12 +1,24 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-
-from fastapi import FastAPI, Request, Response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from config.app_config import AppConfig
+from middleware.authentication_midleware import authentication_middlware
+from routes.authentication import authentication_router
+from services.database import DatabaseService
+
+unprotected_router = APIRouter()
+unprotected_router.include_router(authentication_router)
+
+protected_router = APIRouter(dependencies=[Depends(authentication_middlware)])
+
+
+@protected_router.get("/")
+def get_root():
+    return "Hello world!"
+
 
 app = FastAPI()
 
@@ -23,21 +35,6 @@ engine = create_engine(url=AppConfig.DATABASE_URL)
 SessionLocal = sessionmaker(autoflush=False, bind=engine)
 
 
-@app.middleware("http")
-async def db_session_middleware(request: Request, call_next):
-    response = Response("Internal server error", status_code=500)
-    try:
-        request.state.db = SessionLocal()
-        response = await call_next(request)
-    finally:
-        request.state.db.close()
-    return response
-
-
-def get_db_session(request: Request):
-    return request.state.db
-
-
-@app.get("/")
-def get_root():
-    return "Hello world!"
+app.add_middleware(BaseHTTPMiddleware, dispatch=DatabaseService.db_session_middleware)
+app.include_router(unprotected_router)
+app.include_router(protected_router)
