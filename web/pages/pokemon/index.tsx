@@ -2,14 +2,12 @@ import React from "react";
 
 import type { NextPage } from "next";
 import { useGetPokemonsQuery } from "@/app/features/pokemonApi/pokemonApi";
-import { useGetHelloWorldQuery } from "@/app/services/apiService";
 import Link from "next/link";
-
 import withBaseLayout from "@/components/layouts/base/withBaseLayout";
+export { default as getServerSideProps } from "@/util/serverLoginProps";
 
 const Pokemon: NextPage = () => {
   const { data, error, isLoading } = useGetPokemonsQuery();
-  console.log(data);
 
   return (
     <div style={{ margin: "20%" }}>

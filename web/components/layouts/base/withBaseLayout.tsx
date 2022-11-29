@@ -7,7 +7,7 @@ const withBaseLayout = (WrappedComponent: any) => {
   return (props: object) => {
     return (
       <Box sx={{ minHeight: "100vh", height: "100vh" }}>
-        <Navbar />
+        <Navbar/>
         <Container>
           <WrappedComponent {...props} />;
         </Container>
