@@ -12,7 +12,7 @@ services:
       - CORS_ALLOWED_ORIGINS=["http://localhost:3000"]
       - JWT_BASE=notsecret
     volumes:
-      - ./api:/app
+      - ./api:/server
     ports:
       - "8000:8000"
     depends_on: 

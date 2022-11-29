@@ -1,11 +1,11 @@
 FROM python:3.9.15-bullseye as image
 
-WORKDIR /app
+WORKDIR /server
 
-COPY Pipfile Pipfile.lock /app/
+COPY Pipfile Pipfile.lock /server/
 
 RUN pip install pipenv && pipenv install --system --dev
 
-COPY . /app/
+COPY . /server/
 
 CMD uvicorn app:app host=0.0.0.0 --reload
